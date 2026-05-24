@@ -1,0 +1,173 @@
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE and Editor Files
+.vscode/
+.idea/
+.sublime-project
+.sublime-workspace
+*.code-workspace
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
+.python-version
+.pipenv.lock
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Data and Large Files
+*.csv
+*.xlsx
+*.xls
+*.json
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.mat
+*.npy
+*.npz
+data/
+datasets/
+*.tar.gz
+*.zip
+*.rar
+
+# Machine Learning Models and Checkpoints
+models/
+checkpoints/
+weights/
+*.pt
+*.pth
+*.onnx
+*.pb
+runs/
+logs/
+
+# Compiled Files
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# IDEs specific
+.classpath
+.project
+.pydevproject
+.settings/
+
+# OS Temporary Files
+.AppleDouble
+.LSOverride
+*.tmp
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Temporary Files
+*.bak
+*.orig
+*.rej
+*.swp
+*.vim
+*.swo
+*~
+
+# Build Output
+bin/
+obj/
+out/
+
+# Documentation Build
+docs/_build/
+site/
+
+# Package managers
+poetry.lock
+Pipfile.lock
+yarn.lock
+package-lock.json
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# VS Code specific
+.vscode-settings.json
+.history/
+
+# Node.js (if used)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Temporary project files
+.sixth/
+.venv/
+data/
