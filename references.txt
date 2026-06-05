@@ -1,0 +1,2 @@
+adaptive_control: https://www.youtube.com/watch?v=9ZZgUDeWpGw
+controlling_learning: https://ctms.engin.umich.edu/CTMS/index.php?example=InvertedPendulum&section=ControlStateSpace
