@@ -1,66 +1,102 @@
 #include <iostream>
-#include <Eigen/Dense>
+#include <cmath>
 
-using JointVector = Eigen::Matrix<double, 6, 1>;
-using CartesianVector = Eigen::Matrix<double, 3, 1>;
-using JacobianMatrix = Eigen::Matrix<double, 3, 6>;
-using StiffnessMatrix = Eigen::Matrix<double, 3, 3>;
+
+
+struct Vec3{
+    double x,y,z;
+};
+
+struct Vec6{
+    double data[6];
+};
+
+struct Matrix3x6 {
+    double data[3][6];
+};
 
 class ImpedanceController {
 private:
-    // Impedance parameters
-    // 1. Virtual stiffness
-    StiffnessMatrix K_x_;
-    // 2. Virtual damping
-    StiffnessMatrix D_x_;
-
-    // Target state
-    CartesianVector x_desired_;
-
+    double K;
+    double D;
+    Vec3 x_desired;
 public:
-    ImpedanceController() {
-        // init stiffness (diagonal matrix for decoupled axis)
-        K_x_ = StiffnessMatrix::Identity() * 300.0; // 300 N/m
-        
-        // design critical damping: D = 2*sqrt(K) assuming unit mass
-        D_x_ = StiffnessMatrix::Identity() * (2.0 * std::sqrt(300.0)); 
+    ImpedanceController(): K(300.0), D(2.0* std::sqrt(300.0)){
+        x_desired = {0.0, 0.0, 0.0};
+    }
+    void setTargetPose(const Vec3& target){
+        x_desired = target;
+    }
+    Vec6 update(const Vec3& x_actual, const Vec3& v_actual, const Matrix3x6& J, const Vec6& gravity){
 
-        x_desired_.setZero();
+        //position error
+        Vec3 e_pos;
+        e_pos.x = x_desired.x - x_actual.x;
+        e_pos.y = x_desired.y - x_actual.y;
+        e_pos.z = x_desired.z - x_actual.z;
 
+        // velocity error
+        Vec3 e_vel;
+        e_vel.x = -v_actual.x;
+        e_vel.y = -v_actual.y;
+        e_vel.z = -v_actual.z;
+
+        // Cartesian force
+        Vec3 F;
+
+        F.x = K * e_pos.x + D * e_vel.x;
+        F.y = K * e_pos.y + D * e_vel.y;
+        F.z = K * e_pos.z + D * e_vel.z;
+
+        // Tau = J^T * F
+        Vec6 tau;
+
+        for(int j = 0; j < 6; j++)
+        {
+            tau.data[j] = 
+                J.data[0][j] * F.x +
+                J.data[1][j] * F.y +
+                J.data[2][j] * F.z +
+                gravity.data[j];
+        }
+
+        return tau;
     }
 
-    void setTargetPose(const CartesianVector& x_des){
-        x_desired_ = x_des;
-    }
-
-    JointVector update(const CartesianVector& x_actual, const CartesianVector& v_actual, const JacobianMatrix& Jacobian, const JointVector& gravity_torques)
-    {
-        CartesianVector position_error = x_desired_ - x_actual;
-        CartesianVector velocity_error = -v_actual;
-
-        CartesianVector F_cartesian =  (K_x_ * position_error) + (D_x_ * velocity_error);
-
-        JointVector tau_impedance = Jacobian.transpose() * F_cartesian;
-
-        JointVector tau_command = tau_impedance + gravity_torques;
-
-        return tau_command;
-    }
 };
-
-int main(){
+int main()
+{
     ImpedanceController controller;
 
-    CartesianVector x_desired(1.0, 0.5, 0.2);
-    CartesianVector x_actual(0.95, 0.48, 0.21);
-    CartesianVector v_actual(0.1, -0.05, 0.0);
+    Vec3 x_des = {1.0, 0.5, 0.2};
+    Vec3 x_act = {0.95, 0.48, 0.21};
+    Vec3 v_act = {0.1, -0.05, 0.0};
 
-    JacobianMatrix Jacobian = JacobianMatrix::Random();
-    JointVector gravity = JointVector::Constant(0.5);
+    controller.setTargetPose(x_des);
 
-    controller.setTargetPose(x_desired);
+    Matrix3x6 J = {{
+        {0.5, 0.2, 0.1, 0.0, 0.3, 0.1},
+        {0.1, 0.4, 0.2, 0.5, 0.2, 0.1},
+        {0.2, 0.1, 0.6, 0.2, 0.4, 0.3}
+    }};
 
-    JointVector commanded_torques = controller.update(x_actual, v_actual, Jacobian, gravity);
-    std::cout << "Commanded Joint Torques:\n" << commanded_torques.transpose() << std::endl;
+    Vec6 gravity;
+    for(int i = 0; i < 6; i++)
+        gravity.data[i] = 0.5;
+
+    Vec6 tau =
+        controller.update(
+            x_act,
+            v_act,
+            J,
+            gravity);
+
+    std::cout << "Joint Torques:\n";
+
+    for(int i = 0; i < 6; i++)
+        std::cout << tau.data[i] << " ";
+
+    std::cout << std::endl;
+
     return 0;
 }
