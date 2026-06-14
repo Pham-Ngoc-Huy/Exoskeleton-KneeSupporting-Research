@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cmath>
 
-
-
 struct Vec3{
     double x,y,z;
 };
