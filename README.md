@@ -10,3 +10,12 @@ Exosketon Knee Supporting is a topic combination knowledge about `controlling th
 
 **objective**: aim to get `sustainable solution` for exoskeleton
 
+## **3. Working in Progress**
+- Learning about `Impedance Control`: 
+    - `Physical` Meaning and Relate
+    - `Mathematicals` Relation
+    - Pros and Cons
+- Literature Review about IRC:
+    - Understand the based `Impedance Control` in the paper review
+    - Explore the `NDO (Nonlinear-Disturbance-Observer)`
+     
