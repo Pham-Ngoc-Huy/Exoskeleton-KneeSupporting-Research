@@ -171,3 +171,4 @@ yarn-error.log
 .sixth/
 .venv/
 data/
+.out/
