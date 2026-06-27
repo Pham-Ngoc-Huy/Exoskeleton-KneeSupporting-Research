@@ -21,12 +21,13 @@
 
 
 // Objective: estimate w
-// Assuming: that /dot{w} = 0, we extend the equation (21) with x3 = w, which yeilds an extended system
+// Assuming: that /dot{w} = 0, we extend the equation (21) with x3 = w, which yeilds an extended system -> this was missing
 // /dot{x} = Ax + g(y,u)
 // y = x1,
 #include<iostream>
 #include<cmath>
 #include<iomanip>
+#include<random>
 
 struct State{
     double x1;
@@ -69,6 +70,7 @@ public:
         double a13 = 1.0;
         double a21 = 1.0/(C2*R);
         double a22 = (-1.0)/(C2*R);
+
         // error - where y=x1 => innovation = x1 - x_hat.x1
         double innovation = y - xhat.x1 ;
         // g(y,u)
@@ -102,9 +104,13 @@ int main()
     double dt = 1.0/6000;       // seconds
     double u  = 0.10;      // airflow -> mass flow rate of air
 
-    double x1 = 27.0;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> x1_dist(20.0, 27.0);
+
+    double x1 = x1_dist(gen); 
     double x2 = 27.0;
-    double w  = -2.0;
+    double w  = 0;
 
     const double cp = 0.000281;
     const double C1 = 0.00275;
@@ -115,10 +121,10 @@ int main()
     const double Ro = 11.849;
     const double To = 27.0;
 
-    std::cout << "t|x1|x2|w_real|w_hat\n";
-    std::cout << "====================\n";
+    std::cout << "t | x1 | x2 | w_real |  w_hat \n";
+    std::cout << "==============================\n";
 
-    for(int k=0;k<100;k++)
+    for(int k=0;k<1000;k++)
     {
         double dx1 =
             -(1.0/(C1*R)+1.0/(C1*Ro))*x1
@@ -136,10 +142,12 @@ int main()
 
         observer.update(x1,u,dt);
         std::cout
-            << k << "|"
-            << x1 << "|"
-            << x2 << "|"
-            << w << "|"
+            << k << " | "
+            << x1 << " | "
+            << observer.roomTempEstimate() << " | "
+            << x2 << " | "
+            << observer.wallTempEstimate() << " | "
+            << w << " | "
             << observer.disturbanceEstimate()
             << "\n";
     }
