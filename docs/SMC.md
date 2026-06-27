@@ -1,94 +1,203 @@
-# SMC (Sliding Mode Controller)
+# SMC (Sliding Mode Control) - Hướng dẫn cho người mới
 
-## 1. What is SMC ?
-Sliding mode controllers is a nonlinear control law that has a few nice properties, such as robustness to uncertainties and disturbances, and is relatively straightforward to implement and tune.  
+## 1. SMC là gì?
 
-However, one drawbacks is `chattering` where the system state, and therefore, the actuators trying to maintain the state, jitter back and forth quickly, which might note be desirable
-
-> Sliding mode control : how it is affect trajectory ?
+**Sliding Mode Control (SMC)** là một phương pháp điều khiển phi tuyến tính có những ưu điểm:
+- ✅ **Mạnh mẽ (Robust)**: Chống lại được các sai số trong mô hình và nhiễu từ bên ngoài
+- ✅ **Đơn giản**: Dễ hiểu và dễ cài đặt thực tế
+- ❌ **Nhược điểm**: Chattering (rung lên rung xuống nhanh chóng) → actuators bị hỏng nhanh
 
 ---
-## 2. Objective of SMC: 
-Sliding mode control try to `constrain` the trajectories so that they can only exist along `a slice` within the plane.
-> Why we possibly want this kind of constrained behavior ?
 
--> Control system now behave like a simple first order linear system.
-In one example case, control system can represent like:
+## 2. Ý tưởng chính của SMC là gì?
 
-$$s = b*x_1 + x_2 = 0$$
-where  
-$s$: is switching function  
-$x_1$: is position  
-$x_2$: is velocity  
-$b$: is just a parameter that adjust the slope of the line
+Thay vì để hệ chạy tự do, SMC **ràng buộc** quỹ đạo của hệ chỉ được tồn tại trên **một đường/mặt nhất định** gọi là **sliding surface** (mặt trượt).
 
-Then, we can rewrite in `first-order-system`
+**Ví dụ đơn giản:**
+- Thay vì để quả bóng lăn tự do, SMC tạo ra một "rãnh" và bất kỳ lúc nào quả bóng lệch khỏi rãnh, lực điều khiển sẽ kéo nó trở lại rãnh
+- Khi quả bóng ở trên rãnh, nó lăn một cách dễ dự đoán → hệ trở thành **hệ tuyến tính đơn giản**
 
-**where $\dot{x_1}$ = $x_2$**
+**Phương trình mặt trượt:**
+$$s = b \cdot x_1 + x_2 = 0$$
 
-$$\dot{x_1} = -b*x_1$$
+Trong đó:
+- $s$: hàm chuyển mạch (switching function)
+- $x_1$: vị trí (position)
+- $x_2$: vận tốc (velocity)
+- $b$: tham số điều chỉnh (độ dốc của đường)
 
-> What is switching function ?
-### 2.1. Switching function
+Khi $s = 0$, hệ trở thành:
+$$\dot{x_1} = -b \cdot x_1$$
+
+Đây là **hệ bậc nhất tuyến tính** → dễ kiểm soát!
+
 ---
-The switching function can be any function of syste states, `even nonlinear`
 
-However, it is most common just to set it to a linear combination of states, where the number of `rows` of the `matrix c` is the number of states in the system and number of `columns` is the number of `inputs u` into the system.
+## 3. Hàm chuyển mạch (Switching Function) là gì?
 
-$$s = f(x) = C^T*x$$
+### Định nghĩa
+Hàm chuyển mạch $s$ là một **hàm bất kỳ** của trạng thái hệ (có thể tuyến tính hoặc phi tuyến). 
 
-where:  
-$C$: is $m_x$ by $n_u$
+**Phương trình tổng quát:**
+$$s = f(x) = C^T \cdot x$$
 
-> **First priority:** keep the states on the line
+Trong đó:
+- $C$: ma trận hệ số (kích thước: số trạng thái × số input)
+- $x$: vector trạng thái của hệ
 
-> **Second job:** drive the states to the sliding surface during which the system is going to behave like a second order system:
+### Tác dụng
+Hàm chuyển mạch định nghĩa **mặt trượt** - nơi hệ sẽ hoạt động như một hệ tuyến tính đơn giản.
 
-
-**VietNammese version:** Nhiệm vụ thứ hai của bộ điều khiển Sliding Mode là đưa trạng thái hệ tiến về mặt trượt (sliding surface). Trong giai đoạn này, hệ sẽ được thiết kế để có động học giống như một hệ bậc hai mong muốn.
-
-Trong điều kiện bình thường, khi không có nhiễu hay tác động ngoại lực, các trạng thái của hệ sẽ tự di chuyển theo quỹ đạo đã được thiết kế để tiến dần về mặt trượt.
-
-Khi xuất hiện nhiễu hoặc ngoại lực từ bên ngoài, quỹ đạo trạng thái có thể bị lệch khỏi mặt trượt. Nếu nhiễu đủ lớn, trạng thái sẽ bị đẩy ra xa quỹ đạo mong muốn.
-
-Bộ điều khiển Sliding Mode sẽ tạo ra một thành phần điều khiển chuyển mạch (switching control) nhằm chống lại ảnh hưởng của nhiễu và bất định của mô hình. Thành phần này tạo ra lực hoặc mô-men bù thích hợp để kéo trạng thái quay trở lại mặt trượt.
-
-Một khi trạng thái đã nằm trên mặt trượt, hệ sẽ tiếp tục di chuyển dọc theo mặt trượt đến điểm cân bằng mong muốn. Chính cơ chế này tạo nên tính bền vững (robustness) nổi tiếng của Sliding Mode Control đối với nhiễu và sai số mô hình.
+> **Hai nhiệm vụ chính của SMC:**
+> 1. **Đưa hệ đến mặt trượt** (từ trạng thái ban đầu)
+> 2. **Giữ hệ trên mặt trượt** (ổn định trên mặt trượt)
 
 
-### 2.3. How to design SMC?
 ---
-**Work-steps:**
-1. Define a sliding surface
-2. Reach the sliding surface
-3. Handle boundary layer [this can be saturation]
 
-**For example:**  
-Mass-Spring-Damper:   
+## 4. Làm thế nào để SMC phản ứng lại với nhiễu?
 
-$$M*\ddot{x} + D*\dot{x} + Kx = u(t)$$
+**Tình huống:**
+- Bình thường (không có nhiễu): Hệ tự di chuyển theo quỹ đạo thiết kế để tiến dần về mặt trượt
+- Khi có nhiễu: Quỹ đạo bị lệch khỏi mặt trượt
 
-we called:
+**Cách SMC phản ứng:**
+1. Phát hiện hệ đang lệch khỏi mặt trượt (kiểm tra giá trị $s$)
+2. Tạo ra thành phần điều khiển "chuyển mạch" (switching control) để kéo hệ trở lại
+3. Khi hệ lại nằm trên mặt trượt → tính ổn định được đảm bảo
+4. Đây là lý do SMC **bền vững (robust)** chống lại nhiễu và sai số mô hình
 
-$x_2$ = $\dot{x_1}$
+---
 
-then:
+## 5. Các bước thiết kế SMC
 
-$$\dot{x_2} = \frac{-K}{M} * x_1 - \frac{D}{M} * x_2 + \frac{u(t)}{M}
-$$
-can be rewrite again as:
+### Bước 1: Định nghĩa Hàm Chuyển Mạch (Sliding Surface)
+Chọn $s = C^T \cdot x$ sao cho khi $s = 0$, hệ có động học mong muốn
 
-$$
-\ddot{x_1} = \frac{-K}{M} * x_1 - \frac{D}{M} * \dot{x_1} + \frac{u(t)}{M}
-$$
-> easier to understand just move the highest order to left hand side
+### Bước 2: Tìm Luật Điều Khiển để Đạt Mặt Trượt (Reachability)
+Đảm bảo là hệ có thể tới được và giữ trên mặt trượt
 
--> come up with:
+**Điều kiện Reachability:**
+$$s \cdot \dot{s} < 0$$
 
-$$\dot{x} = f(x) + g(x) * u(t) $$
+Nghĩa là: $s$ và $\dot{s}$ có dấu ngược nhau → hệ luôn hướng về mặt trượt
 
-> Now. need to find the switching function
+### Bước 3: Xử lý Chattering bằng Boundary Layer
+Thay thế hàm sign bằng hàm mịn hơn để giảm rung lên rung xuống
 
-**Reachability condition**
+---
 
-$$s * \dot{s} < 0 $$
+## 6. Ví dụ chi tiết: Hệ Mass-Spring-Damper
+
+### 6.1 Mô hình hệ thống
+Hệ phương trình vi phân:
+$$M \cdot \ddot{x} + D \cdot \dot{x} + K \cdot x = u(t)$$
+
+Trong đó:
+- $M$: khối lượng
+- $D$: hệ số cản
+- $K$: độ cứng của lò xo
+- $u(t)$: lực điều khiển (input)
+
+### 6.2 Chuyển sang dạng State-Space
+
+Định nghĩa trạng thái:
+- $x_1 = x$ (vị trí)
+- $x_2 = \dot{x}$ (vận tốc)
+
+Phương trình trạng thái:
+$$\dot{x_1} = x_2$$
+$$\dot{x_2} = -\frac{K}{M} \cdot x_1 - \frac{D}{M} \cdot x_2 + \frac{u(t)}{M}$$
+
+Viết dưới dạng tổng quát:
+$$\dot{x} = f(x) + g(x) \cdot u(t)$$
+
+Trong đó:
+- $f(x) = [x_2, -\frac{K}{M} \cdot x_1 - \frac{D}{M} \cdot x_2]^T$
+- $g(x) = [0, \frac{1}{M}]^T$
+
+### 6.3 Bước 1: Chọn Hàm Chuyển Mạch
+
+Chọn đơn giản nhất (Linear combination):
+$$s = b \cdot x_1 + x_2$$
+
+Khi $s = 0$:
+$$\dot{x_1} = -b \cdot x_1$$
+
+Đây là **hệ bậc 1 ổn định** (nếu $b > 0$)
+
+### 6.4 Bước 2: Đảm bảo Reachability
+
+Yêu cầu: $s \cdot \dot{s} < 0$
+
+**Reaching Law - Constant Rate:**
+$$\dot{s} = -\eta \cdot \text{sign}(s)$$
+
+hoặc
+
+**Reaching Law - Exponential (phổ biến hơn):**
+$$\dot{s} = -\eta \cdot \text{sign}(s) - K \cdot s$$
+
+Trong đó:
+- $\eta$: độ lợi (gain) - kiểm soát tốc độ tiến về mặt trượt
+- $K$: tham số exponential - kiểm soát độ ổn định gần mặt trượt
+
+### 6.5 Tính Luật Điều Khiển u(t)
+
+Từ điều kiện Reachability:
+$$\dot{s} = C^T \cdot [\dot{x}] = C^T \cdot [f(x) + g(x) \cdot u(t)]$$
+
+Giải cho $u(t)$:
+$$u(t) = [C^T \cdot g(x)]^{-1} \cdot [-C^T \cdot f(x) + h(s(x))]$$
+
+Trong đó $h(s(x))$ là reaching law được chọn ở bước 2
+
+---
+
+## 7. Giải quyết Chattering bằng Boundary Layer
+
+### Vấn đề Chattering
+- Hàm `sign(s)` là không liên tục → khi $s$ thay đổi dấu, lực điều khiển thay đổi đột ngột
+- Kết quả: Actuators rung lên rung xuống **rất nhanh** (chattering) → hỏng thiết bị
+
+### Giải pháp: Boundary Layer
+Thay `sign(s)` bằng hàm mịn $\Theta(s)$:
+
+$$\Theta(s) = 
+\begin{cases}
+1, & s > \Theta  \\
+\frac{s}{\Theta}, & |s| \leq \Theta  \\
+-1, & s < \Theta
+\end{cases}$$
+
+Trong đó $\Theta$ là độ rộng của **boundary layer** (thường là một hằng số nhỏ)
+
+**Kết quả:**
+- Lực điều khiển **mịn hơn** khi gần mặt trượt
+- Giảm chattering đáng kể
+- Hệ vẫn ổn định và bền vững
+
+---
+
+## 8. Tóm tắt quy trình thiết kế SMC
+
+| Bước | Nội dung | Công thức |
+|------|---------|----------|
+| 1 | Định nghĩa mặt trượt | $s = C^T \cdot x = 0$ |
+| 2 | Chọn reaching law | $\dot{s} = -\eta \cdot \text{sign}(s) - K \cdot s$ |
+| 3 | Tính luật điều khiển | $u(t) = [C^T \cdot g(x)]^{-1} \cdot [-C^T \cdot f(x) + \dot{s}]$ |
+| 4 | Áp dụng boundary layer | $\Theta(s)$ thay cho $\text{sign}(s)$ |
+
+---
+
+## 9. Ưu điểm và nhược điểm
+
+| Ưu điểm | Nhược điểm |
+|--------|----------|
+| ✅ Bền vững với sai số mô hình | ❌ Chattering (nếu không xử lý) |
+| ✅ Chống nhiễu tốt | ❌ Cần biết mô hình hệ (f(x), g(x)) |
+| ✅ Dễ cài đặt | ❌ Chọn tham số phức tạp |
+| ✅ Hoạt động tốt ở điều kiện khác nhau | ❌ Khó thiết kế cho hệ phức tạp |
+
+## 10. Reference:
+[1] https://www.youtube.com/watch?v=RD-2oiwEbDo&t=795s
