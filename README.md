@@ -18,4 +18,11 @@ Exosketon Knee Supporting is a topic combination knowledge about `controlling th
 - Literature Review about IRC:
     - Understand the based `Impedance Control` in the paper review
     - Explore the `NDO (Nonlinear-Disturbance-Observer)`
-     
+- Done with basic therical and programming with `NDO`, `SMC` 
+- Starting collab all into ones and develop the control settings 
+
+## Simulation
+
+Working around with simulation the `exoskeleton` with `MuJuCo`
+
+![alt text](simulation_demo.png)
