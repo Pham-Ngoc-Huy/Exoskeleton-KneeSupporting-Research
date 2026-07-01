@@ -1,0 +1,39 @@
+<mujoco model="exoskeleton_scene">
+  <include file="exoskeleton.xml"/>
+
+  <option integrator="RK4" timestep="0.002" gravity="0 0 0"/>
+
+  <!-- Setup the view and environment settings -->
+  <statistic center="0 0 0.8" extent="1.5"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.2 0.2 0.2" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="140" elevation="-20"/>
+  </visual>
+
+  <!-- Skybox and Ground textures/materials -->
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.1 0.15 0.25" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.15 0.18 0.2" rgb2="0.08 0.1 0.12"
+      markrgb="0.4 0.4 0.4" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.15"/>
+  </asset>
+
+  <worldbody>
+    <!-- Direct lighting -->
+    <light pos="0 0 3.0" dir="0 0 -1" directional="true" castshadow="true"/>
+    <light pos="1.5 1.5 3.0" dir="-0.5 -0.5 -1" directional="true" castshadow="true"/>
+    
+    <!-- Floor plane -->
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+  </worldbody>
+
+  <!-- Toggleable Weld Constraint to hold the pelvis in mid-air -->
+  <equality>
+    <!-- By default, this weld constraint is active (active="true").
+         It binds the pelvis to the world body at x=0, y=0, z=1.0 (relative pose offset).
+         We can programmatically deactivate it to test free walking/falling. -->
+    <weld name="pelvis_weld" body1="pelvis" relpose="0 0 2.0 1 0 0 0" active="true"/>
+  </equality>
+</mujoco>

@@ -1,0 +1,173 @@
+<mujoco model="lower_limb_exoskeleton">
+  <compiler angle="radian" autolimits="true"/>
+
+  <default>
+    <default class="exoskeleton">
+      <joint damping="10.0" armature="0.05" type="hinge"/>
+      <geom contype="1" conaffinity="1" condim="3"/>
+      <!-- Default position actuator settings -->
+      <position kp="250" forcerange="-150 150"/>
+    </default>
+  </default>
+
+  <!-- Sleek and modern color scheme -->
+  <asset>
+    <!-- Carbon fiber / dark structure -->
+    <material name="carbon_fiber" rgba="0.15 0.15 0.16 1.0" specular="0.8" shininess="0.6"/>
+    <!-- Anodized orange details for joints -->
+    <material name="orange_anodized" rgba="0.95 0.35 0.05 1.0" specular="0.9" shininess="0.8"/>
+    <!-- Matte black padding/cushion -->
+    <material name="pad_matte" rgba="0.08 0.08 0.09 1.0" specular="0.1" shininess="0.1"/>
+    <!-- Semi-transparent guards -->
+    <material name="guard_translucent" rgba="0.2 0.6 0.9 0.4" specular="0.5" shininess="0.5"/>
+  </asset>
+
+  <worldbody>
+    <!-- Pelvis / Waist Band -->
+    <body name="pelvis" pos="0 0 2.0" childclass="exoskeleton">
+      <freejoint name="pelvis_free"/>
+      
+      <!-- Central waist frame -->
+      <geom name="pelvis_back" type="box" size="0.05 0.16 0.04" material="carbon_fiber"/>
+      <!-- Back support battery pack / controller housing (aesthetic) -->
+      <geom name="pelvis_pack" type="box" size="0.03 0.10 0.12" pos="-0.08 0 0.08" material="carbon_fiber"/>
+      <geom name="pelvis_pack_accent" type="box" size="0.005 0.08 0.10" pos="-0.116 0 0.08" material="orange_anodized"/>
+      
+      <!-- Pelvis pads / cushions -->
+      <geom name="pelvis_pad" type="box" size="0.048 0.15 0.038" pos="0.005 0 0" material="pad_matte"/>
+
+      <!-- ==================== LEFT LEG ==================== -->
+      <!-- Left Hip Mount -->
+      <body name="left_hip_mount" pos="0 0.17 0">
+        <geom name="left_hip_mount_geom" type="cylinder" size="0.045 0.015" quat="1 0 0 0" material="orange_anodized"/>
+
+        <!-- Left Hip Yaw (Z-axis rotation) -->
+        <body name="left_hip_yaw_link" pos="0 0 0">
+          <joint name="left_hip_yaw" axis="0 0 1" range="-0.4 0.4"/>
+          <geom name="left_hip_yaw_geom" type="sphere" size="0.03" material="carbon_fiber"/>
+
+          <!-- Left Hip Roll (X-axis rotation) -->
+          <body name="left_hip_roll_link" pos="0 0 0">
+            <joint name="left_hip_roll" axis="1 0 0" range="-0.3 0.4"/>
+            <geom name="left_hip_roll_geom" type="cylinder" size="0.025 0.03" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+
+            <!-- Left Hip Pitch (Y-axis rotation, flexion/extension) -->
+            <body name="left_thigh" pos="0 0.03 0">
+              <joint name="left_hip_pitch" axis="0 1 0" range="-0.5 1.4"/>
+              
+              <!-- Thigh structures -->
+              <geom name="left_thigh_upper" type="cylinder" size="0.035 0.02" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+              <geom name="left_thigh_strut" type="capsule" size="0.02 0.15" pos="0 0.015 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+              
+              <!-- Thigh cuffs & pads (mounting to human leg) -->
+              <geom name="left_thigh_cuff" type="cylinder" size="0.045 0.04" pos="0 0.005 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+              <geom name="left_thigh_pad" type="cylinder" size="0.042 0.042" pos="0.01 0.005 -0.18" quat="1 0 0 0" material="pad_matte"/>
+
+              <!-- Left Knee Pitch (Y-axis rotation, flexion) -->
+              <body name="left_shank" pos="0 0.015 -0.36">
+                <joint name="left_knee_pitch" axis="0 -1 0" range="0.0 2.1"/>
+                
+                <!-- Knee structure -->
+                <geom name="left_knee_joint_geom" type="cylinder" size="0.03 0.02" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+                <geom name="left_shank_strut" type="capsule" size="0.018 0.15" pos="0 -0.015 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+                
+                <!-- Shank cuffs & pads -->
+                <geom name="left_shank_cuff" type="cylinder" size="0.04 0.04" pos="0 -0.005 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+                <geom name="left_shank_pad" type="cylinder" size="0.037 0.042" pos="0.01 -0.005 -0.18" quat="1 0 0 0" material="pad_matte"/>
+
+                <!-- Left Ankle Pitch (Y-axis rotation) -->
+                <body name="left_foot" pos="0 -0.015 -0.36">
+                  <joint name="left_ankle_pitch" axis="0 1 0" range="-0.6 0.5"/>
+                  
+                  <!-- Ankle joint -->
+                  <geom name="left_ankle_joint_geom" type="cylinder" size="0.022 0.015" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+                  
+                  <!-- Foot plate -->
+                  <geom name="left_foot_plate" type="box" size="0.12 0.045 0.008" pos="0.04 0 -0.02" material="carbon_fiber"/>
+                  <!-- Heel/Toe contact sensors/geoms -->
+                  <geom name="left_heel" type="box" size="0.03 0.04 0.005" pos="-0.05 0 -0.03" material="pad_matte" condim="6"/>
+                  <geom name="left_toe" type="box" size="0.05 0.04 0.005" pos="0.1 0 -0.03" material="pad_matte" condim="6"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <!-- ==================== RIGHT LEG ==================== -->
+      <!-- Right Hip Mount -->
+      <body name="right_hip_mount" pos="0 -0.17 0">
+        <geom name="right_hip_mount_geom" type="cylinder" size="0.045 0.015" quat="1 0 0 0" material="orange_anodized"/>
+
+        <!-- Right Hip Yaw (Z-axis rotation) -->
+        <body name="right_hip_yaw_link" pos="0 0 0">
+          <joint name="right_hip_yaw" axis="0 0 1" range="-0.4 0.4"/>
+          <geom name="right_hip_yaw_geom" type="sphere" size="0.03" material="carbon_fiber"/>
+
+          <!-- Right Hip Roll (X-axis rotation) -->
+          <body name="right_hip_roll_link" pos="0 0 0">
+            <joint name="right_hip_roll" axis="1 0 0" range="-0.4 0.3"/>
+            <geom name="right_hip_roll_geom" type="cylinder" size="0.025 0.03" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+
+            <!-- Right Hip Pitch (Y-axis rotation, flexion/extension) -->
+            <body name="right_thigh" pos="0 -0.03 0">
+              <joint name="right_hip_pitch" axis="0 1 0" range="-0.5 1.4"/>
+              
+              <!-- Thigh structures -->
+              <geom name="right_thigh_upper" type="cylinder" size="0.035 0.02" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+              <geom name="right_thigh_strut" type="capsule" size="0.02 0.15" pos="0 -0.015 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+              
+              <!-- Thigh cuffs & pads -->
+              <geom name="right_thigh_cuff" type="cylinder" size="0.045 0.04" pos="0 -0.005 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+              <geom name="right_thigh_pad" type="cylinder" size="0.042 0.042" pos="0.01 -0.005 -0.18" quat="1 0 0 0" material="pad_matte"/>
+
+              <!-- Right Knee Pitch (Y-axis rotation, flexion) -->
+              <body name="right_shank" pos="0 -0.015 -0.36">
+                <joint name="right_knee_pitch" axis="0 -1 0" range="0.0 2.1"/>
+                
+                <!-- Knee structure -->
+                <geom name="right_knee_joint_geom" type="cylinder" size="0.03 0.02" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+                <geom name="right_shank_strut" type="capsule" size="0.018 0.15" pos="0 0.015 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+                
+                <!-- Shank cuffs & pads -->
+                <geom name="right_shank_cuff" type="cylinder" size="0.04 0.04" pos="0 0.005 -0.18" quat="1 0 0 0" material="carbon_fiber"/>
+                <geom name="right_shank_pad" type="cylinder" size="0.037 0.042" pos="0.01 0.005 -0.18" quat="1 0 0 0" material="pad_matte"/>
+
+                <!-- Right Ankle Pitch (Y-axis rotation) -->
+                <body name="right_foot" pos="0 0.015 -0.36">
+                  <joint name="right_ankle_pitch" axis="0 1 0" range="-0.6 0.5"/>
+                  
+                  <!-- Ankle joint -->
+                  <geom name="right_ankle_joint_geom" type="cylinder" size="0.022 0.015" quat="0.7071068 0.7071068 0 0" material="orange_anodized"/>
+                  
+                  <!-- Foot plate -->
+                  <geom name="right_foot_plate" type="box" size="0.12 0.045 0.008" pos="0.04 0 -0.02" material="carbon_fiber"/>
+                  <!-- Heel/Toe contact sensors/geoms -->
+                  <geom name="right_heel" type="box" size="0.03 0.04 0.005" pos="-0.05 0 -0.03" material="pad_matte" condim="6"/>
+                  <geom name="right_toe" type="box" size="0.05 0.04 0.005" pos="0.1 0 -0.03" material="pad_matte" condim="6"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Actuators for the exoskeleton joints (PD control) -->
+  <actuator>
+    <!-- Left Leg Actuators -->
+    <position name="left_hip_yaw_act" joint="left_hip_yaw" ctrlrange="-0.4 0.4" kp="150" class="exoskeleton"/>
+    <position name="left_hip_roll_act" joint="left_hip_roll" ctrlrange="-0.3 0.4" kp="150" class="exoskeleton"/>
+    <position name="left_hip_pitch_act" joint="left_hip_pitch" ctrlrange="-0.5 1.4" kp="300" class="exoskeleton"/>
+    <position name="left_knee_pitch_act" joint="left_knee_pitch" ctrlrange="0.0 2.1" kp="300" class="exoskeleton"/>
+    <position name="left_ankle_pitch_act" joint="left_ankle_pitch" ctrlrange="-0.6 0.5" kp="150" class="exoskeleton"/>
+
+    <!-- Right Leg Actuators -->
+    <position name="right_hip_yaw_act" joint="right_hip_yaw" ctrlrange="-0.4 0.4" kp="150" class="exoskeleton"/>
+    <position name="right_hip_roll_act" joint="right_hip_roll" ctrlrange="-0.4 0.3" kp="150" class="exoskeleton"/>
+    <position name="right_hip_pitch_act" joint="right_hip_pitch" ctrlrange="-0.5 1.4" kp="300" class="exoskeleton"/>
+    <position name="right_knee_pitch_act" joint="right_knee_pitch" ctrlrange="0.0 2.1" kp="300" class="exoskeleton"/>
+    <position name="right_ankle_pitch_act" joint="right_ankle_pitch" ctrlrange="-0.6 0.5" kp="150" class="exoskeleton"/>
+  </actuator>
+</mujoco>
