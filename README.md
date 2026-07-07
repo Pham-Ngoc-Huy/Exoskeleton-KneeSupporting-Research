@@ -22,12 +22,12 @@ Exosketon Knee Supporting is a topic combination knowledge about `controlling th
 - Starting collab all into ones and develop the control settings 
 
 
-## Researching
-# Human Torque Observer (Nonlinear Observer)
+# Researching
+## Human Torque Observer (Nonlinear Observer)
 
 ---
 
-# 1. Human-Exoskeleton Dynamics
+### 1. Human-Exoskeleton Dynamics
 
 The dynamic equation of the human-exoskeleton system is
 
@@ -88,7 +88,7 @@ $$
 
 ---
 
-# 2. State-Space Representation
+### 2. State-Space Representation
 
 Define the state vector
 

@@ -3,13 +3,15 @@
 ## I. Overall `Control Theory` for Exoskeleton - Knee Supporter
 ![alt text](control_theory.png)
 
-**Derivation:**
+## **Derivation:**
 
 ### 1. Outer loop error
 ---
 $$e_\theta(t) = \theta_r(t) - \theta(t)$$
 
+```bash
 => Apply `LapLace Transform`
+```
 $$E_\Theta(s) = \Theta_r(s) - \Theta(s)$$
 ### 2. Wearer Model
 ---
@@ -73,4 +75,5 @@ $h$: is come from human $\rightarrow$ anything, eg: forces, torque,....
 $e$: is come from exoskeleton, the same definition of $h$
 
 ## III. IRC (Structure)
+
 
