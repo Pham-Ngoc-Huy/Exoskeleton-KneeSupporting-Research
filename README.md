@@ -92,28 +92,28 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 
 Define the state vector
 
-$$
+```math
 x=
 \begin{bmatrix}
 \theta\\
 \dot{\theta}
 \end{bmatrix}
-$$
+```
 
 Then
 
-$$
+```math
 \dot{x}
 =
 \begin{bmatrix}
 \dot{\theta}\\
 \ddot{\theta}
 \end{bmatrix}
-$$
+```
 
 The nonlinear dynamics can be expressed as
 
-$$
+```math
 \boxed{
 \dot{x}
 =
@@ -121,7 +121,7 @@ F(x)
 +
 G(x)(\tau_e+\tilde{\tau}_h)
 }
-$$
+```
 
 ---
 
@@ -129,7 +129,7 @@ $$
 
 The nonlinear function is
 
-$$
+```math
 F(x)
 =
 \begin{bmatrix}
@@ -145,19 +145,19 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 \tilde{\tau}_e
 \right)
 \end{bmatrix}
-$$
+```
 
 where
 
-$$
+```math
 x=(\theta,\dot{\theta})
-$$
+```
 
 and the exoskeleton velocity
 
-$$
+```math
 \dot{\theta}_t
-$$
+```
 
 is regarded as a measurable signal.
 
@@ -165,14 +165,14 @@ is regarded as a measurable signal.
 
 ## Input Matrix
 
-$$
+```math
 G(x)
 =
 \begin{bmatrix}
 0\\
 \dfrac{1}{J}
 \end{bmatrix}
-$$
+```
 
 ---
 
@@ -180,7 +180,7 @@ $$
 
 The nonlinear disturbance observer is defined by
 
-$$
+```math
 \boxed{
 \begin{aligned}
 \hat{\tau}_h &= z+p(x)\\
@@ -195,13 +195,13 @@ G(x)
 \right]
 \end{aligned}
 }
-$$
+```
 
 ---
 
 Substituting the system dynamics,
 
-$$
+```math
 \begin{bmatrix}
 \dot{\theta}\\
 \ddot{\theta}
@@ -226,11 +226,11 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 \dfrac{1}{J}
 \end{bmatrix}
 (\tau_e+\hat{\tau}_h)
-$$
+```
 
 Therefore,
 
-$$
+```math
 \boxed{
 \begin{aligned}
 \dot{\theta}
@@ -254,7 +254,7 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 (\tau_e+\hat{\tau}_h)
 \end{aligned}
 }
-$$
+```
 
 ---
 
@@ -264,19 +264,19 @@ $$
 
 The tracking error is
 
-$$
+```math
 e_\theta(t)
 =
 \theta_d(t)-\theta(t)
-$$
+```
 
 Taking Laplace transform,
 
-$$
+```math
 E_\theta(s)
 =
 \Theta_d(s)-\Theta(s)
-$$
+```
 
 ---
 
@@ -284,14 +284,14 @@ $$
 
 The estimated human torque is
 
-$$
+```math
 \tilde{\tau}_h
 =
 W(s)
 \left[
 \Theta_d(s)-\Theta(s)
 \right]
-$$
+```
 
 ---
 
@@ -299,11 +299,11 @@ $$
 
 The exoskeleton control torque is
 
-$$
+```math
 \tilde{\tau}_e
 =
 G_{IRC}(s)\Theta(s)
-$$
+```
 
 ---
 
@@ -311,17 +311,17 @@ $$
 
 The total actuator input becomes
 
-$$
+```math
 \tau_{in}(s)
 =
 \tilde{\tau}_h(s)
 +
 \tilde{\tau}_e(s)
-$$
+```
 
 Substituting,
 
-$$
+```math
 \tau_{in}(s)
 =
 W(s)
@@ -330,7 +330,7 @@ W(s)
 \right]
 +
 G_{IRC}(s)\Theta(s)
-$$
+```
 
 ---
 
@@ -338,15 +338,15 @@ $$
 
 Define the admittance
 
-$$
+```math
 G(s)
 =
 \frac{\Theta(s)}{Z_d(s)}
-$$
+```
 
 Hence,
 
-$$
+```math
 \tau_{in}(s)
 =
 Z_d(s)
@@ -355,13 +355,13 @@ W(s)(\Theta_d(s)-\Theta(s))
 +
 G_{IRC}(s)\Theta(s)
 \right]
-$$
+```
 
 ---
 
 Expanding,
 
-$$
+```math
 Z_d(s)\Theta(s)
 =
 W(s)\Theta_d(s)
@@ -369,17 +369,11 @@ W(s)\Theta_d(s)
 W(s)\Theta(s)
 +
 G_{IRC}(s)\Theta(s)
-$$
+```
 
-Moving all terms involving
+Moving all terms involving \(\Theta(s)\) to the left-hand side,
 
-$$
-\Theta(s)
-$$
-
-to the left-hand side,
-
-$$
+```math
 \Theta(s)
 \left[
 Z_d(s)
@@ -390,11 +384,11 @@ G_{IRC}(s)
 \right]
 =
 W(s)\Theta_d(s)
-$$
+```
 
 Thus,
 
-$$
+```math
 \boxed{
 \Theta(s)
 =
@@ -402,11 +396,11 @@ $$
 {Z_d(s)+W(s)-G_{IRC}(s)}
 \Theta_d(s)
 }
-$$
+```
 
 Finally,
 
-$$
+```math
 \boxed{
 \frac{\Theta(s)}
 {\Theta_d(s)}
@@ -414,7 +408,7 @@ $$
 \frac{W(s)}
 {Z_d(s)+W(s)-G_{IRC}(s)}
 }
-$$
+```
 
 ---
 
@@ -422,21 +416,21 @@ $$
 
 The combined system parameters are
 
-$$
+```math
 J=J_h+J_e
-$$
+```
 
-$$
+```math
 B=B_h+B_e
-$$
+```
 
-$$
+```math
 \tau_g=\tau_{gh}+\tau_{ge}
-$$
+```
 
 The overall dynamics become
 
-$$
+```math
 J\ddot{\theta}
 +
 B(\dot{\theta}-\dot{\theta}_t)
@@ -448,12 +442,12 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 \tau_e
 =
 \tau_c+\tau_h
-$$
+```
 
 where
 
-- \(h\): Human contribution
-- \(e\): Exoskeleton contribution
+- $h$: Human contribution
+- $e$: Exoskeleton contribution
 
 ---
 
@@ -489,7 +483,7 @@ The controller utilizes
 
 The final closed-loop dynamics are
 
-$$
+```math
 M(\theta)\ddot{\theta}
 +
 C(\theta,\dot{\theta})\dot{\theta}
@@ -499,15 +493,15 @@ G(\theta)
 \tau_h
 +
 SMC(\theta,\dot{\theta},\theta_d)
-$$
+```
 
 where
 
-- \(M(\theta)\) is the inertia matrix.
-- \(C(\theta,\dot{\theta})\) is the Coriolis/centrifugal matrix.
-- \(G(\theta)\) is the gravitational torque.
-- \(\tau_h\) is the human torque.
-- \(SMC(\cdot)\) is the Sliding Mode Controller.
+- $M(\theta)$ is the inertia matrix.
+- $C(\theta,\dot{\theta})$ is the Coriolis/centrifugal matrix.
+- $G(\theta)$ is the gravitational torque.
+- $\tau_h$ is the human torque.
+- $SMC(\cdot)$ is the Sliding Mode Controller.
 
 ---
 
@@ -528,6 +522,7 @@ where
 {Z_d(s)+W(s)-G_{IRC}(s)}
 }
 ```
+
 ## Simulation
 
 Working around with simulation the `exoskeleton` with `MuJuCo`
