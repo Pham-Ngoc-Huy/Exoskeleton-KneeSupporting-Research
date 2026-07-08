@@ -36,7 +36,7 @@ J\ddot{\theta}
 +
 B(\dot{\theta}-\dot{\theta}_t)
 +
-A\,\operatorname{sgn}(\dot{\theta}-\dot{\theta}_t)
+A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 +
 \tau_g\sin\theta
 +
@@ -47,7 +47,7 @@ A\,\operatorname{sgn}(\dot{\theta}-\dot{\theta}_t)
 
 Rearranging,
 
-$$
+```math
 \ddot{\theta}
 =
 \frac{1}{J}
@@ -64,11 +64,11 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 +
 \tilde{\tau}_h
 \right)
-$$
+```
 
 or equivalently,
 
-$$
+```math
 \ddot{\theta}
 +
 \frac{1}{J}
@@ -84,7 +84,7 @@ A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
 =
 \frac{1}{J}
 (\tau_e+\tilde{\tau}_h)
-$$
+```
 
 ---
 
