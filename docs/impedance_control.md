@@ -17,7 +17,9 @@ Trong đó:
 
 Về mặt vật lý, thành phần độ cứng đóng vai trò như một "bộ nhớ vị trí", luôn có xu hướng kéo hệ thống trở về trạng thái cân bằng ban đầu. Khi robot bị dịch chuyển khỏi vị trí mong muốn, năng lượng được tích lũy dưới dạng thế năng đàn hồi: 
 
-$$ E_p = \frac{1}{2}Kx^2 $$
+```math
+E_p = \frac{1}{2}Kx^2
+```
 Trong đó: 
 - $E_p$ là thế năng đàn hồi được lưu trữ trong lò xo ảo. 
 - $K$ là độ cứng của hệ thống. 
@@ -32,14 +34,18 @@ Trong điều kiện lý tưởng không tồn tại ma sát hoặc bất kỳ c
 ### Khối lượng ảo M (Virtual Inertia) – "Bộ nhớ vận tốc" và Động năng
 
  Khối lượng ảo $M$ sinh ra lực quán tính chống lại sự thay đổi vận tốc: 
- $$ F_M = M\ddot{x} $$
+```math
+  F_M = M\ddot{x}
+```
  Trong đó: 
  - $F_M$ là lực quán tính. 
  - $M$ là khối lượng ảo của hệ thống. 
  - $\ddot{x}$ là gia tốc. 
  
  Không giống như độ cứng $K$, khối lượng $M$ không lưu trữ thế năng mà lưu trữ động năng của hệ thống: 
- $$ E_k = \frac{1}{2}Mv^2 $$
+ ```math
+ E_k = \frac{1}{2}Mv^2
+ ```
  Trong đó: 
  - $E_k$ là động năng. 
  - $M$ là khối lượng ảo. 
@@ -54,7 +60,9 @@ Trong điều kiện lý tưởng không tồn tại ma sát hoặc bất kỳ c
  
  ### Giảm chấn B (Damping) – "Bộ triệt tiêu năng lượng" 
  Giảm chấn $B$ sinh ra lực cản tỉ lệ với vận tốc: 
- $$ F_B = B\dot{x} $$
+```math
+F_B = B\dot{x}
+```
  Trong đó: 
  - $F_B$ là lực giảm chấn. 
  - $B$ là hệ số giảm chấn. 
@@ -78,7 +86,9 @@ Người đặt nền móng cho cho thuyết `điều khiển trở kháng`: $Ne
 ## Phương trình động lực học mục tiêu (Target Dynamics) 
 của hệ thống Khối lượng - Lò xo - Giảm chấn ảo được biểu diễn như sau:
 
-$$M_d (\ddot{x} - \ddot{x}_d) + B_d (\dot{x} - \dot{x}_d) + K_d (x - x_d) = F_{ext}$$
+```math
+M_d (\ddot{x} - \ddot{x}_d) + B_d (\dot{x} - \dot{x}_d) + K_d (x - x_d) = F_{ext}
+```
 
 Trong đó:
 - $x, \dot{x}, \ddot{x}$: Vị trí, vận tốc, gia tốc thực tế của đầu cuối robot (end-effector).

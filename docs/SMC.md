@@ -18,7 +18,9 @@ Thay vì để hệ chạy tự do, SMC **ràng buộc** quỹ đạo của hệ
 - Khi quả bóng ở trên rãnh, nó lăn một cách dễ dự đoán → hệ trở thành **hệ tuyến tính đơn giản**
 
 **Phương trình mặt trượt:**
-$$s = b \cdot x_1 + x_2 = 0$$
+```math
+s = b \cdot x_1 + x_2 = 0
+```
 
 Trong đó:
 - $s$: hàm chuyển mạch (switching function)
@@ -27,7 +29,9 @@ Trong đó:
 - $b$: tham số điều chỉnh (độ dốc của đường)
 
 Khi $s = 0$, hệ trở thành:
-$$\dot{x_1} = -b \cdot x_1$$
+```math
+\dot{x_1} = -b \cdot x_1
+```
 
 Đây là **hệ bậc nhất tuyến tính** → dễ kiểm soát!
 
@@ -39,7 +43,9 @@ $$\dot{x_1} = -b \cdot x_1$$
 Hàm chuyển mạch $s$ là một **hàm bất kỳ** của trạng thái hệ (có thể tuyến tính hoặc phi tuyến). 
 
 **Phương trình tổng quát:**
-$$s = f(x) = C^T \cdot x$$
+```math
+s = f(x) = C^T \cdot x
+```
 
 Trong đó:
 - $C$: ma trận hệ số (kích thước: số trạng thái × số input)
@@ -78,7 +84,9 @@ Chọn $s = C^T \cdot x$ sao cho khi $s = 0$, hệ có động học mong muốn
 Đảm bảo là hệ có thể tới được và giữ trên mặt trượt
 
 **Điều kiện Reachability:**
-$$s \cdot \dot{s} < 0$$
+```math
+s \cdot \dot{s} < 0
+```
 
 Nghĩa là: $s$ và $\dot{s}$ có dấu ngược nhau → hệ luôn hướng về mặt trượt
 
@@ -91,7 +99,9 @@ Thay thế hàm sign bằng hàm mịn hơn để giảm rung lên rung xuống
 
 ### 6.1 Mô hình hệ thống
 Hệ phương trình vi phân:
-$$M \cdot \ddot{x} + D \cdot \dot{x} + K \cdot x = u(t)$$
+```math
+M \cdot \ddot{x} + D \cdot \dot{x} + K \cdot x = u(t)
+```
 
 Trong đó:
 - $M$: khối lượng
@@ -106,11 +116,17 @@ Trong đó:
 - $x_2 = \dot{x}$ (vận tốc)
 
 Phương trình trạng thái:
-$$\dot{x_1} = x_2$$
-$$\dot{x_2} = -\frac{K}{M} \cdot x_1 - \frac{D}{M} \cdot x_2 + \frac{u(t)}{M}$$
+```math
+\dot{x_1} = x_2
+```
+```math
+\dot{x_2} = -\frac{K}{M} \cdot x_1 - \frac{D}{M} \cdot x_2 + \frac{u(t)}{M}
+```
 
 Viết dưới dạng tổng quát:
-$$\dot{x} = f(x) + g(x) \cdot u(t)$$
+```math
+\dot{x} = f(x) + g(x) \cdot u(t)
+```
 
 Trong đó:
 - $f(x) = [x_2, -\frac{K}{M} \cdot x_1 - \frac{D}{M} \cdot x_2]^T$
@@ -119,10 +135,14 @@ Trong đó:
 ### 6.3 Bước 1: Chọn Hàm Chuyển Mạch
 
 Chọn đơn giản nhất (Linear combination):
-$$s = b \cdot x_1 + x_2$$
+```math
+s = b \cdot x_1 + x_2
+```
 
 Khi $s = 0$:
-$$\dot{x_1} = -b \cdot x_1$$
+```math
+\dot{x_1} = -b \cdot x_1
+```
 
 Đây là **hệ bậc 1 ổn định** (nếu $b > 0$)
 
@@ -131,12 +151,16 @@ $$\dot{x_1} = -b \cdot x_1$$
 Yêu cầu: $s \cdot \dot{s} < 0$
 
 **Reaching Law - Constant Rate:**
-$$\dot{s} = -\eta \cdot \text{sign}(s)$$
+```math
+\dot{s} = -\eta \cdot \text{sign}(s)
+```
 
 hoặc
 
 **Reaching Law - Exponential (phổ biến hơn):**
-$$\dot{s} = -\eta \cdot \text{sign}(s) - K \cdot s$$
+```math
+\dot{s} = -\eta \cdot \text{sign}(s) - K \cdot s
+```
 
 Trong đó:
 - $\eta$: độ lợi (gain) - kiểm soát tốc độ tiến về mặt trượt
@@ -145,10 +169,14 @@ Trong đó:
 ### 6.5 Tính Luật Điều Khiển u(t)
 
 Từ điều kiện Reachability:
-$$\dot{s} = C^T \cdot [\dot{x}] = C^T \cdot [f(x) + g(x) \cdot u(t)]$$
+```math
+\dot{s} = C^T \cdot [\dot{x}] = C^T \cdot [f(x) + g(x) \cdot u(t)]
+```
 
 Giải cho $u(t)$:
-$$u(t) = [C^T \cdot g(x)]^{-1} \cdot [-C^T \cdot f(x) + h(s(x))]$$
+```math
+u(t) = [C^T \cdot g(x)]^{-1} \cdot [-C^T \cdot f(x) + h(s(x))]
+```
 
 Trong đó $h(s(x))$ là reaching law được chọn ở bước 2
 
@@ -162,14 +190,14 @@ Trong đó $h(s(x))$ là reaching law được chọn ở bước 2
 
 ### Giải pháp: Boundary Layer
 Thay `sign(s)` bằng hàm mịn $\Theta(s)$:
-
-$$\Theta(s) = 
+```math
+\Theta(s) = 
 \begin{cases}
 1, & s > \Theta  \\
 \frac{s}{\Theta}, & |s| \leq \Theta  \\
 -1, & s < \Theta
-\end{cases}$$
-
+\end{cases}
+```
 Trong đó $\Theta$ là độ rộng của **boundary layer** (thường là một hằng số nhỏ)
 
 **Kết quả:**
