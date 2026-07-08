@@ -31,7 +31,7 @@ Exosketon Knee Supporting is a topic combination knowledge about `controlling th
 
 The dynamic equation of the human-exoskeleton system is
 
-$$
+```math
 J\ddot{\theta}
 +
 B(\dot{\theta}-\dot{\theta}_t)
@@ -43,7 +43,7 @@ A\,\operatorname{sgn}(\dot{\theta}-\dot{\theta}_t)
 \tau_e
 =
 \tau_e+\tilde{\tau}_h
-$$
+```
 
 Rearranging,
 
@@ -519,7 +519,7 @@ where
 - The IRC controller reduces the apparent impedance of the exoskeleton.
 - The transfer function of the human-exoskeleton interaction is
 
-$$
+```math
 \boxed{
 \frac{\Theta(s)}
 {\Theta_d(s)}
@@ -527,7 +527,7 @@ $$
 \frac{W(s)}
 {Z_d(s)+W(s)-G_{IRC}(s)}
 }
-$$
+```
 ## Simulation
 
 Working around with simulation the `exoskeleton` with `MuJuCo`
