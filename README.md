@@ -36,7 +36,7 @@ J\ddot{\theta}
 +
 B(\dot{\theta}-\dot{\theta}_t)
 +
-A\,\mathrm{sgn}(\dot{\theta}-\dot{\theta}_t)
+A\,\operatorname{sgn}(\dot{\theta}-\dot{\theta}_t)
 +
 \tau_g\sin\theta
 +
