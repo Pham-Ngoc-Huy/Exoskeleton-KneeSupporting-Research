@@ -1,4 +1,4 @@
-# SMC (Sliding Mode Control) - Hướng dẫn cho người mới
+# SMC (Sliding Mode Control)
 
 ## 1. SMC là gì?
 
