@@ -13,6 +13,8 @@ private:
     double min_integral;
     // Enable/disable anti-windup
     bool anti_windup_enabled;
+    // step-time
+    double dt;
     // Flag to skip integration on first Run
     bool firstRun;
 
@@ -21,14 +23,14 @@ public:
      * @brief: Apply `Trapezodial Rule`: the equation is:  
      * @param max_limit: which is 1e9 - stands for +infinity
      * @param min_limit: which is -1e9 - stands for -infinity
+     * @param step_time: time-window
      */
-    TrapezodialIntegral(double max_limit = 1e9, double min_limit = -1e9);
+    TrapezodialIntegral(double max_limit, double min_limit, double step_time);
     /**
      * @brief: 
      * @param: error -> current error
-     * @param: dt -> time windows
      */
-    double update(double error, double dt);
+    double update(double error);
     double getIntegral() const;
     void reset();
     void setAntiWindupLimits(double max_limit, double min_limit);

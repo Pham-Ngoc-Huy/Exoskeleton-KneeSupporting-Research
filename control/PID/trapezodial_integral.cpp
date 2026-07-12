@@ -1,26 +1,42 @@
+#include <iostream>
 #include "trapezodial_integral.h"
 #include <cmath>
 
-TrapezodialIntegral::TrapezodialIntegral(double max_limit, double min_limit) 
-    : accumulated_integral(0.0),
-      previous_error(0.0),
-      firstRun(true),
-      max_integral(max_limit),
-      min_integral(min_limit),
-      anti_windup_enabled(true) {}
+TrapezodialIntegral::TrapezodialIntegral(double max_limit, double min_limit, double step_time) {
+    accumulated_integral=0.0;
+    previous_error=0.0;
+    firstRun=true;
+    dt=step_time;
+    max_integral=max_limit;
+    min_integral=min_limit;
+    anti_windup_enabled=true;
+}
 
-double TrapezodialIntegral::update(double error, double dt) {
+double TrapezodialIntegral::update(double error) {
     // Skip integration on first call to avoid spurious values
     // t = 0
     if (firstRun) {
         firstRun = false;
         previous_error = error;
-        return accumulated_integral;
+        return 0.0;
     }
+    std::cout << "\nINTEGRAL DEBUG ==========>\n";
+    std::cout << "e(k-1) = " << previous_error << '\n';
+    std::cout << "e(k)   = " << error << '\n';
     // t > 0
     // Trapezoidal integration: area of trapezoid = (f0 + f1) / 2 * dt
     // This is more accurate than rectangular integration
     double integration_step = ((error + previous_error) / 2.0) * dt;
+    std::cout << "I(k)    = (("
+            << error
+            << " + "
+            << previous_error
+            << ") / 2) "
+            << " * "
+            << dt
+            << " = "
+            << integration_step
+            << '\n';
     accumulated_integral += integration_step;
 
     // Apply anti-windup (clamping) if enabled
