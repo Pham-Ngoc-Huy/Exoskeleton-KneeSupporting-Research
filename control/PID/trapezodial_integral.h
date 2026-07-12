@@ -20,7 +20,7 @@ private:
 
 public:
     /**
-     * @brief: Apply `Trapezodial Rule`: the equation is:  
+     * @brief: Apply `Trapezodial Rule` constructor
      * @param max_limit: which is 1e9 - stands for +infinity
      * @param min_limit: which is -1e9 - stands for -infinity
      * @param step_time: time-window
