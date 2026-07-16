@@ -19,6 +19,7 @@ double SlidingModeController::compute(const State& state, double xd){
             <<std::endl;
 
     // sliding surface
+    
     double s = edot + lambda * e;
     std::cout<<"Sliding-Surface ===== \n"
             <<"s = e_dot + lambda * e = "
@@ -26,16 +27,12 @@ double SlidingModeController::compute(const State& state, double xd){
             <<std::endl;
 
     // control: proportional to sliding variable plus boundary-layer saturation
-    double u_eq = -eta * ((s > 0.0) ? 1.0 : ((s < 0.0) ? 1.0 : 0.0)); // equivalent/linear part
-    std::cout<<"Reachability ===== \n"
-            <<"s_dot = -eta * sign(s) = "
-            <<u_eq
-            <<std::endl;
-
-    double u_sw = -fi * SlidingModeController::saturation(s, fi); // switching with boundary layer size fi
-
-    // total control (optionally compensate known disturbance bound D)
-    double u = u_eq + u_sw;
+    double sat_val = saturation(s,fi);
+    double u = (-1.0) * lambda * edot - eta*sat_val;
+    std::cout << "Control-Law ===== \n"
+              << "sat(s, phi) = " << sat_val << "\n"
+              << "u = -lambda*e_dot - eta*sat(s, phi) = " << u
+              << std::endl;
     return u;
 }
 
@@ -43,11 +40,22 @@ double SlidingModeController::reachability() const {
     return D;
 }
 
-double SlidingModeController::saturation(double s, double phi){
-    if (phi <= 0.0) {
-        return (s > 0.0) ? 1.0 : ((s < 0.0) ? -1.0 : 0.0);
-    }
-    double ratio = s / phi;
-    if (std::fabs(ratio) < phi) return ratio;
-    return (ratio > 0.0) ? 1.0 : -1.0;
+double SlidingModeController::saturation(double s, double fi){
+    double ratio = s / fi;
+    if (fabs(s) <= fi){
+        std::cout<<"Boundaries_2: abs(s) < fi \n"
+            <<"get-result: "<<ratio
+            <<std::endl;
+        return ratio;
+    };
+    if (s > fi) {
+        std::cout<<"Boundaries_1: s > fi \n"
+            <<"get-result: "<<1.0
+            <<std::endl;
+        return 1.0; 
+    };
+    std::cout<<"Boundaries_3: s < fi \n"
+        <<"get-result: "<<-1.0
+        <<std::endl;   
+    return -1.0;
 }

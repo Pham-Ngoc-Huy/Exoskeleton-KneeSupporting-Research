@@ -1,6 +1,7 @@
 #ifndef SMC_H
 #define SMC_H
 
+// this can be more than 2 -> but just set 2 first
 struct State {
     double x1;
     double x2;
@@ -36,8 +37,8 @@ public:
     /** 
      * @brief: Smooth saturation function: sat(s/phi) with boundary layer `phi`.
      * @param: s: sliding surface
-     * @param: phi
+     * @param: fi
      * */ 
-    static double saturation(double s, double phi);
+    static double saturation(double s, double fi);
 };
 #endif
