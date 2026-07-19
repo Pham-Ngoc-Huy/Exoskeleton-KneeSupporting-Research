@@ -16,6 +16,7 @@ public:
     @param L observer gain
     @param p nonlinear function selected to shape the observer dynammics
     @param z internal observer state
+    @param d unknown disturbance
     @param d_hat estimate disturbance
     */
     NonLinearDisturbanceObserver(double L, double z, double d_hat, double dt);
@@ -26,7 +27,7 @@ public:
     /**
      * 
      */
-    double CompensationPhase(double u_smc, double g_c);
+    double CompensationPhase(double u_smc);
      /**
      * @brief: Return d_hat
      */
