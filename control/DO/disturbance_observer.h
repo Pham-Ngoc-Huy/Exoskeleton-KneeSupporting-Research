@@ -29,9 +29,7 @@ public:
 
     /**
      * @brief: Disturbance estimation
-     * 
-     * d_hat = Q(P^-1 * y - u)
-     * 
+     *      d_hat = Q(P^-1 * y - u)
      * @param inversePlantOutput P^-1(s)*y
      * @param controlInput u 
      */
