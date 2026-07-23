@@ -3,6 +3,46 @@
 ## I. Overall `Control Theory` for Exoskeleton - Knee Supporter
 ![alt text](control_theory.png)
 
+```mermaid
+flowchart LR
+
+R["θ_r"] --> E((⊕))
+THETA["θ"] -->|−| E
+
+E --> W["Wearer"]
+W -->|τ_h| T((⊕))
+
+
+subgraph HE["Human-Exo System (1/Z_d)"]
+    direction LR
+
+    T --> HEX["Human-Exo"]
+    HEX --> THETA_OUT["θ"]
+
+
+    subgraph IRC["IRC"]
+        direction TB
+
+        OBS["Nonlinear<br/>Observer"]
+
+        SMC["SMC"]
+        ADM["Desired<br/>Admittance<br/>Model"]
+
+        OBS -->|τ̂_h| SMC
+        OBS -->|τ̂_h| ADM
+        ADM -->|θ_d| SMC
+    end
+
+    THETA_OUT --> OBS
+    SMC -->|τ_e| T
+end
+
+THETA_OUT --> THETA
+
+
+style HE fill:#dddddd,stroke:#555,stroke-width:2px
+style IRC fill:#efefef,stroke:#444,stroke-width:1.5px
+```
 ## **Derivation:**
 
 ### 1. Outer loop error
