@@ -41,13 +41,15 @@ double NonLinearDisturbanceObserver::ObserverPhase(double x, double f_x, double 
     double z_dot = -L * z - L * (f_x + g_x * u);
     z += z_dot * dt;
     d_hat = z + p_x;
-    std::cout << "[ObserverPhase] x=" << x
-            << " f_x=" << f_x
-            << " g_x=" << g_x
-            << " u=" << u
-            << " | p_x=" << p_x
-            << " z_dot=" << z_dot
-            << " z(new)=" << z
+    std::cout << "[ObserverPhase] ===============\n" 
+            << " x=" << x << "\n"
+            << " f_x=" << f_x << "\n"
+            << " g_x=" << g_x << "\n"
+            << " u=" << u << "\n"
+            << "---------------------\n"
+            << " p_x=" << p_x << "\n"
+            << " z_dot=" << z_dot << "\n"
+            << " z(new)=" << z << "\n"
             << " -> d_hat=" << d_hat << std::endl;
     return d_hat;
 }

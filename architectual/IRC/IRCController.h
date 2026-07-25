@@ -1,4 +1,10 @@
+#ifndef IRC_H
+#define IRC_H
+
 #include <iostream>
+#include "../../algorithms/SMC/sliding_mode_controller.h"
+#include "../../models/admittance/admittance_model.h"
+#include "../../observers/NDO/nonlinear_disturbance_observer.h"
 
 /*
 equation:
@@ -40,9 +46,38 @@ Notation:
     SMC: Sliding Mode Controller
     Plant: Human–Exoskeleton dynamics
 */
-class ImpedanceReductionController {
-private:
+struct IRCParams
+{
+    admittanceParams admittance;
 
-public:
+    double lambda;
+    double eta;
+    double fi;
+    double D;
 
+    double observerGain;
+    double dt;
 };
+struct RobotState
+{
+    double degree;
+    double degree_dot;
+
+    double degree_d_dot;   // treadmill/reference velocity
+    double degree_d_ddot;
+
+    double torque_e;
+};
+
+class IRCController
+{
+private:
+    AdmittanceModel admittance_;
+    SlidingModeController smc_;
+    NonLinearDisturbanceObserver ndo_;
+    double previous_tau_e = 0.0;
+public:
+    IRCController(const IRCParams & params);
+    double update(const RobotState& state);
+};
+#endif

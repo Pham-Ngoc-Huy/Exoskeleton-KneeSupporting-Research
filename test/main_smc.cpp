@@ -18,7 +18,7 @@
 #include <fstream>
 #include <cmath>
 #include <cassert>
-#include "sliding_mode_controller.h"
+#include "../algorithms/SMC/sliding_mode_controller.h"
 
 // Simple point-mass plant: m*xddot = u + d(t), d(t) = 0.5*sin(t)
 static double disturbance(double t) {
