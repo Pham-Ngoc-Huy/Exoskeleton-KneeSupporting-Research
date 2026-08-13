@@ -16,10 +16,10 @@ private:
 public:
     /**
      * @brief: Sliding Mode Controller: constructor
-     * @param: lambda: 
-     * @param: eta: gain -> control velocity move to sliding surface
-     * @param: fi: 
-     * @param: D
+     * @param lambda: 
+     * @param eta: gain -> control velocity move to sliding surface
+     * @param fi: 
+     * @param D
      */
     SlidingModeController(double lambda, double eta, double fi, double D);
     /** 
@@ -36,8 +36,8 @@ public:
 
     /** 
      * @brief: Smooth saturation function: sat(s/phi) with boundary layer `phi`.
-     * @param: s: sliding surface
-     * @param: fi
+     * @param s: sliding surface
+     * @param fi
      * */ 
     static double saturation(double s, double fi);
 };

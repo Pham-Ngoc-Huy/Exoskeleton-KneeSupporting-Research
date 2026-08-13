@@ -2,9 +2,9 @@
 #include "IRCController.h"
 
 
-// // Temporary placeholders
-// double f_x = 0.0;
-// double g_x = 1.0;
+// Temporary placeholders
+double f_x = 0.0;
+double g_x = 1.0;
 
 IRCController::IRCController(const IRCParams &p)
     :

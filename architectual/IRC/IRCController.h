@@ -77,7 +77,13 @@ private:
     NonLinearDisturbanceObserver ndo_;
     double previous_tau_e = 0.0;
 public:
+    /**
+     * @brief build a constructor for a IRC (Impedance Reduction Controller)
+     * @param IRCParams:
+     * 
+     */
     IRCController(const IRCParams & params);
+
     double update(const RobotState& state);
 };
 #endif
