@@ -1,9 +1,8 @@
-#include "admittance_model.h"
+#include "admittance_control.h"
 #include <iostream>
 
 
-
-AdmittanceModel::AdmittanceModel(double mass, double damping, double stiffness, double time_step){
+AdmittanceControl::AdmittanceControl(double mass, double damping, double stiffness, double time_step){
     M=mass;
     B=damping;
     K=stiffness;
@@ -11,7 +10,7 @@ AdmittanceModel::AdmittanceModel(double mass, double damping, double stiffness, 
     target_position = 0.0;
 };
 
-State AdmittanceModel::update(double F_ext){
+State AdmittanceControl::update(double F_ext){
     double spring_force = K * (currentState.position - target_position);
     double damping_force = B * currentState.velocity;
 
@@ -22,16 +21,16 @@ State AdmittanceModel::update(double F_ext){
     return currentState;
 };
 
-void AdmittanceController::setTargetPosition(double target) {
+void AdmittanceControl::setTargetPosition(double target) {
     target_position = target;
 }
 
-void AdmittanceController::resetState(double initial_position) {
+void AdmittanceControl::resetState(double initial_position) {
     currentState.position = initial_position;
     currentState.velocity = 0.0;
     currentState.acceleration = 0.0;
 }
 
-State AdmittanceController::getState() const {
+State AdmittanceControl::getState() const {
     return currentState;
 }

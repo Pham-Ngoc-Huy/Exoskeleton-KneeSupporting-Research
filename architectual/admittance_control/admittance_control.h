@@ -1,5 +1,5 @@
-#ifndef ADMITTANCE_MODEL
-#define ADMITTANCE_MODEL
+#ifndef ADMITTANCE_CONTROL
+#define ADMITTANCE_CONTROL
 
 struct State {
     double position;
@@ -9,7 +9,7 @@ struct State {
     State() : position(0.0), velocity(0.0), acceleration(0.0) {}
 };
 
-class AdmittanceModel {
+class AdmittanceControl {
 private:
     double K;
     double B;
@@ -26,7 +26,7 @@ public:
      * @param mass: virtual mass
      * @param time_step: dt
      */
-    AdmittanceModel(double stiffness, double damping, double mass, double time_step);
+    AdmittanceControl(double stiffness, double damping, double mass, double time_step);
 
     /**
      * @brief Update the state when the F_ext changed
